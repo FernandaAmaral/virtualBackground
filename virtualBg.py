@@ -1,14 +1,16 @@
-############################# Virtual Background ####################################
+###############################################################################
 # Author: Fernanda Amaral Melo
 # Contact: fernanda.amaral.melo@gmail.com
-#####################################################################################
+###############################################################################
 
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
 # Macros
-THRESH = 90
+THRESHOLD = 90
+N_OPENING = 8
+N_CLOSING = 80
 
 
 class virtualBackground(object):
@@ -17,7 +19,10 @@ class virtualBackground(object):
         self.virtualbg = virtualbg
         self._resizeImage()
 
-    def replaceBg(self, pic):
+    def replaceBg(self, pic, threshold=THRESHOLD, n_opening=N_OPENING, n_closing=N_CLOSING):
+        self.threshold = threshold
+        self.n_opening = int(n_opening)
+        self.n_closing = int(n_closing)
         binary_pic = self._getBinaryPic(pic)
         new_pic = pic * binary_pic
         new_bg = self.virtualbg * (1 - binary_pic)
@@ -31,16 +36,15 @@ class virtualBackground(object):
 
     def _getBinaryPic(self, pic):
         binary_pic = pic - self.bg
-        th, binary_pic = cv2.threshold(binary_pic, THRESH, 255, cv2.THRESH_BINARY)
+        th, binary_pic = cv2.threshold(binary_pic, self.threshold, 255, cv2.THRESH_BINARY)
         binary_pic = self.morphOperations(binary_pic)
-        binary_pic = binary_pic > THRESH
+        binary_pic = binary_pic > self.threshold
         return binary_pic.astype(int)
 
     def morphOperations(self, image):
-        size = image.shape
-        kernel = np.ones((int(size[0]/100), int(size[1]/100)))
+        kernel = np.ones((self.n_opening, self.n_opening))
         opening = cv2.morphologyEx(image, cv2.MORPH_OPEN, kernel)
-        kernel = np.ones((int(size[0]/5), int(size[1]/5)))
+        kernel = np.ones((self.n_closing, self.n_closing))
         closing = cv2.morphologyEx(opening, cv2.MORPH_CLOSE, kernel)
         return closing
 
