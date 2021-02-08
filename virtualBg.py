@@ -91,11 +91,20 @@ class virtualBackground(object):
         np.matrix
             Binary matrix
         """
+        # Subtract the background from the original image
         binary_pic = pic - self.bg
-        th, binary_pic = cv2.threshold(binary_pic, self.threshold, 255, cv2.THRESH_BINARY)
+
+        # Apply morphological operations (opening/closing)
         binary_pic = self._morph_operations(binary_pic)
+
+        # Take the mean value from the 3 channels (RGB)
+        binary_pic = binary_pic.mean(axis=(2))
+
+        # Calculate binary matrix using user defined threshold
         binary_pic = binary_pic > self.threshold
-        return binary_pic.astype(int)
+
+        # Convert the matrix to 3d space (repeating the same)
+        return np.repeat(binary_pic[:, :, np.newaxis], 3, axis=2)
 
     def _morph_operations(self, image):
         """Perform opening and closing operations on image for noise removal
