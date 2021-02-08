@@ -23,9 +23,14 @@ python3 -m pip install -r requirements.txt
 
 ## Usage 
 
-Run the application
+Run the application for webcam background replacement
 ```
 python app.py
+```
+
+Run the application with example image
+```
+python virtualBg.py
 ```
 
 ## Overview
