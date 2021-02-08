@@ -28,7 +28,7 @@ Run the application for webcam background replacement
 python app.py
 ```
 
-Run the application with example image
+Run the application with an example image
 ```
 python virtualBg.py
 ```
