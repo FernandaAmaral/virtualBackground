@@ -51,4 +51,4 @@ Then, the binary matrix multiplied by the original image, obtaining an image wit
 This script uses the tkinter module to create a GUI for
 1. Selecting a desired virtual background image
 2. Taking a picture of the real background using webcam
-3. Controlling the background replacement algorith paramenters (binary image threshold and opening/closing kernel size)
+3. Controlling the background replacement algorithm paramenters (binary image threshold and opening/closing kernel size)
